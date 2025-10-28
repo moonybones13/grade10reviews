@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz sur l’Imparfait</title>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        margin-top: 20px;
+    }
+    #quiz-box {
+        background: rgba(255,255,255,0.15);
+        border-radius: 15px;
+        padding: 30px;
+        width: 80%;
+        max-width: 700px;
+        margin: 40px auto;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    input {
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        width: 60%;
+        margin-top: 15px;
+    }
+    button {
+        padding: 10px 18px;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    button:hover { background-color: #45a049; }
+    #result { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    #progress-container {
+        width: 80%;
+        background: rgba(255,255,255,0.2);
+        margin: 20px auto;
+        height: 25px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    #progress-bar {
+        background-color: #00FF88;
+        height: 100%;
+        width: 0%;
+        text-align: center;
+        color: black;
+        font-weight: bold;
+        transition: width 0.3s;
+    }
+    #admin-btn {
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        background: rgba(255,255,255,0.3);
+        color: black;
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    #admin-panel {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        color: black;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+    #admin-panel input {
+        width: 60%;
+        margin-top: 10px;
+    }
+    #close-btn {
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Quiz sur l’Imparfait 🇫🇷</h1>
+<div id="progress-container">
+    <div id="progress-bar">0%</div>
+</div>
+
+<div id="quiz-box">
+    <p id="question"></p>
+    <input type="text" id="answer" placeholder="Tape ta réponse ici">
+    <br>
+    <button onclick="checkAnswer()">Soumettre</button>
+    <p id="result"></p>
+</div>
+
+<button id="admin-btn" onclick="openAdminPrompt()">⚙️</button>
+
+<div id="admin-panel">
+    <h3>Modifier le score</h3>
+    <input type="number" id="edit-score" placeholder="Score en %">
+    <br>
+    <button onclick="applyEditedScore()">Appliquer</button>
+    <button id="close-btn" onclick="closeAdminPanel()">Fermer</button>
+</div>
+
+<script>
+const questions = [
+    { sentence: "Autrefois, nous __________ (avoir) un chien qui s'appelait Max.", answer: "avions" },
+    { sentence: "Quand j'étais petit, je __________ (jouer) dans le jardin.", answer: "jouais" },
+    { sentence: "Il __________ (pleuvoir) souvent en avril.", answer: "pleuvait" },
+    { sentence: "Nous __________ (aller) à la plage chaque été.", answer: "allions" },
+    { sentence: "Tu __________ (faire) toujours tes devoirs après le dîner.", answer: "faisais" },
+    { sentence: "Mes parents __________ (travailler) tard le soir.", answer: "travaillaient" },
+    { sentence: "Les enfants __________ (regarder) la télévision tous les matins.", answer: "regardaient" },
+    { sentence: "Je __________ (être) très timide à l'école.", answer: "étais" },
+    { sentence: "Vous __________ (aimer) lire des bandes dessinées.", answer: "aimiez" },
+    { sentence: "Il __________ (finir) souvent son repas avant tout le monde.", answer: "finissait" },
+    { sentence: "Nous __________ (prendre) le bus ensemble.", answer: "prenions" },
+    { sentence: "Elles __________ (se lever) tôt le matin.", answer: "se levaient" },
+    { sentence: "Tu __________ (choisir) toujours la même couleur.", answer: "choisissais" },
+    { sentence: "Je __________ (voir) souvent mes cousins le week-end.", answer: "voyais" },
+    { sentence: "Les élèves __________ (écouter) attentivement le professeur.", answer: "écoutaient" },
+    { sentence: "Ma mère __________ (cuisiner) des plats délicieux.", answer: "cuisinait" },
+    { sentence: "Nous __________ (attendre) le bus sous la pluie.", answer: "attendions" },
+    { sentence: "Tu __________ (lire) beaucoup de romans d'aventure.", answer: "lisais" },
+    { sentence: "Ils __________ (habiter) à Paris.", answer: "habitaient" },
+    { sentence: "Quand j'étais jeune, je __________ (vouloir) devenir pilote.", answer: "voulais" },
+    { sentence: "Mon frère __________ (dessiner) des voitures.", answer: "dessinait" },
+    { sentence: "Vous __________ (étudier) souvent ensemble.", answer: "étudiiez" },
+    { sentence: "Le chat __________ (dormir) sur le canapé.", answer: "dormait" },
+    { sentence: "Nous __________ (se promener) dans le parc.", answer: "nous promenions" },
+    { sentence: "Je __________ (croire) en la magie.", answer: "croyais" },
+    { sentence: "Elles __________ (attendre) leurs amis.", answer: "attendaient" },
+    { sentence: "Tu __________ (pouvoir) venir quand tu voulais.", answer: "pouvais" },
+    { sentence: "Il __________ (pleurer) quand il tombait.", answer: "pleurait" },
+    { sentence: "Nous __________ (voir) souvent des films ensemble.", answer: "voyions" },
+    { sentence: "Vous __________ (dire) toujours la vérité.", answer: "disiez" },
+    { sentence: "Je __________ (mettre) du sucre dans mon café.", answer: "mettais" },
+    { sentence: "Les oiseaux __________ (chanter) le matin.", answer: "chantaient" },
+    { sentence: "Ma sœur __________ (se maquiller) avant de sortir.", answer: "se maquillait" },
+    { sentence: "Nous __________ (vivre) dans une petite maison.", answer: "vivions" },
+    { sentence: "Tu __________ (rire) beaucoup avec tes amis.", answer: "riais" },
+    { sentence: "Ils __________ (venir) chez nous chaque dimanche.", answer: "venaient" },
+    { sentence: "Je __________ (manger) trop de bonbons.", answer: "mangeais" },
+    { sentence: "Vous __________ (danser) jusqu'à minuit.", answer: "dansiez" },
+    { sentence: "Il __________ (parler) très vite.", answer: "parlait" },
+    { sentence: "Nous __________ (se souvenir) de ces moments.", answer: "nous souvenions" },
+    { sentence: "Tu __________ (entendre) le vent souffler.", answer: "entendais" },
+    { sentence: "Je __________ (répondre) toujours poliment.", answer: "répondais" },
+    { sentence: "Les enfants __________ (courir) dans le champ.", answer: "couraient" },
+    { sentence: "Vous __________ (choisir) vos places préférées.", answer: "choisissiez" },
+    { sentence: "Ma grand-mère __________ (raconter) des histoires.", answer: "racontait" },
+    { sentence: "Nous __________ (nager) dans la rivière.", answer: "nagions" },
+    { sentence: "Tu __________ (boire) du lait tous les matins.", answer: "buvais" },
+    { sentence: "Ils __________ (connaître) bien ce quartier.", answer: "connaissaient" },
+    { sentence: "Je __________ (savoir) déjà la réponse.", answer: "savais" },
+    { sentence: "Elle __________ (écrire) des lettres chaque semaine.", answer: "écrivait" }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+    if (currentQuestion >= questions.length) {
+        document.getElementById('quiz-box').innerHTML = `<h2>Quiz terminé ! 🎉</h2><p>Score final : ${score}/${questions.length} (${Math.round(score / questions.length * 100)}%)</p>`;
+        return;
+    }
+    document.getElementById('question').textContent = questions[currentQuestion].sentence;
+    document.getElementById('answer').value = '';
+    document.getElementById('result').textContent = '';
+}
+
+function checkAnswer() {
+    const answer = document.getElementById('answer').value.trim().toLowerCase();
+    const correct = questions[currentQuestion].answer.toLowerCase();
+    if (answer === correct) {
+        score++;
+        document.getElementById('result').textContent = "✅ Correct !";
+        document.getElementById('result').style.color = "lime";
+    } else {
+        document.getElementById('result').textContent = "❌ Mauvaise réponse. La bonne réponse était : " + correct;
+        document.getElementById('result').style.color = "red";
+    }
+    currentQuestion++;
+    updateProgress();
+    setTimeout(loadQuestion, 1000);
+}
+
+function updateProgress() {
+    const percent = Math.round((score / questions.length) * 100);
+    const bar = document.getElementById('progress-bar');
+    bar.style.width = percent + '%';
+    bar.textContent = percent + '%';
+}
+
+function openAdminPrompt() {
+    const code = prompt("Entrez le code d’accès :");
+    if (code === "KingGeorge!!") {
+        document.getElementById('admin-panel').style.display = "block";
+    } else {
+        alert("Code incorrect ❌");
+    }
+}
+
+function closeAdminPanel() {
+    document.getElementById('admin-panel').style.display = "none";
+}
+
+function applyEditedScore() {
+    let newPercent = parseInt(document.getElementById('edit-score').value);
+    if(isNaN(newPercent) || newPercent < 0 || newPercent > 100){
+        alert("Veuillez entrer un nombre valide entre 0 et 100.");
+        return;
+    }
+    const bar = document.getElementById('progress-bar');
+    bar.style.width = newPercent + '%';
+    bar.textContent = newPercent + '%';
+    score = Math.round((newPercent / 100) * questions.length);
+    alert(`Score édité à ${newPercent}%`);
+    closeAdminPanel();
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
