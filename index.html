@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 10 Revisions</title>
+  <style>
+    /* --- Global Styles --- */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* --- Navigation Bar --- */
+    nav {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8em 2em;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    nav h1 {
+      font-size: 1.6em;
+      letter-spacing: 1px;
+      color: #ffcb74;
+      margin: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5em;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      background: #ffcb74;
+      color: #1f1c2c;
+      transform: scale(1.1);
+    }
+
+    /* --- Hero Section --- */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 5em 2em;
+    }
+
+    .hero h2 {
+      font-size: 2.8em;
+      margin-bottom: 0.5em;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+
+    .hero p {
+      font-size: 1.2em;
+      max-width: 600px;
+      margin-bottom: 2em;
+      line-height: 1.5em;
+    }
+
+    /* --- Fancy Buttons --- */
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(90deg, #ffcb74, #ff8c42);
+      color: #1f1c2c;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #ffcb74;
+    }
+
+    /* --- Footer --- */
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 1em;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      font-size: 0.9em;
+      color: #bbb;
+      position: fixed;
+      bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        gap: 0.8em;
+      }
+
+      .hero h2 {
+        font-size: 2em;
+      }
+
+      .hero p {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <h1>Grade 10 Revisions</h1>
+    <ul>
+      <li><a href="imparfait.html">Imparfait Practice</a></li>
+      <li><a href="nrfmidtermreview.html">NRF Midterm Review</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <h2>Welcome to Your Revision Hub 🎓</h2>
+    <p>Study smarter, not harder. Review your lessons, test your knowledge, and get ready to ace your Grade 10 exams!</p>
+    <a class="button" href="imparfait.html">Start Studying</a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Grade 10 Revisions | Designed for learning & success
+  </footer>
+</body>
+</html>
