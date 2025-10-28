@@ -17,51 +17,59 @@
       align-items: center;
     }
 
-    /* --- Navigation Bar --- */
-    nav {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.8em 2em;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 100;
-    }
+/* --- Navigation Bar --- */
+nav {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center; /* center the buttons horizontally */
+  align-items: center;
+  padding: 0.8em 2em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
 
-    nav h1 {
-      font-size: 1.6em;
-      letter-spacing: 1px;
-      color: #ffcb74;
-      margin: 0;
-    }
+/* Keep title on left */
+nav h1 {
+  position: absolute;
+  left: 2em;
+  font-size: 1.6em;
+  letter-spacing: 1px;
+  color: #ffcb74;
+  margin: 0;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1.5em;
-      margin: 0;
-      padding: 0;
-    }
+/* Centered button container */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5em;
+  margin: 0;
+  padding: 0;
+}
 
-    nav ul li a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: 600;
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: 0.3s ease;
-    }
+/* Make links look like buttons */
+nav ul li a {
+  text-decoration: none;
+  color: #1f1c2c;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ffcb74, #f2b441);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transition: 0.3s ease;
+}
 
-    nav ul li a:hover {
-      background: #ffcb74;
-      color: #1f1c2c;
-      transform: scale(1.1);
-    }
-
+/* Hover effect: turn deep blue and glow gold */
+nav ul li a:hover {
+  background: linear-gradient(90deg, #005f99, #003366);
+  color: #ffcb74;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #ffcb74;
+}
     /* --- Hero Section --- */
     .hero {
       flex: 1;
