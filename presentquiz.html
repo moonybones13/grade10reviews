@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/png" href="logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz sur le Présent</title>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    h1 { margin-top: 20px; }
+
+    #quiz-box {
+        background: rgba(255,255,255,0.15);
+        border-radius: 15px;
+        padding: 30px;
+        width: 80%;
+        max-width: 700px;
+        margin: 40px auto;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    input {
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        width: 60%;
+        margin-top: 15px;
+    }
+    button {
+        padding: 10px 18px;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    button:hover { background-color: #45a049; }
+
+    #result { margin-top: 20px; font-weight: bold; font-size: 18px; }
+
+    #progress-container {
+        width: 80%;
+        background: rgba(255,255,255,0.2);
+        margin: 20px auto;
+        height: 25px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    #progress-bar {
+        background-color: #00FF88;
+        height: 100%;
+        width: 0%;
+        text-align: center;
+        color: black;
+        font-weight: bold;
+        transition: width 0.3s;
+    }
+
+    #admin-btn {
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        background: rgba(255,255,255,0.3);
+        color: black;
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #admin-panel {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        color: black;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+    #admin-panel input { width: 60%; margin-top: 10px; }
+
+    #close-btn {
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Quiz sur le Présent de l’Indicatif 🇫🇷</h1>
+
+<div id="progress-container"><div id="progress-bar">0%</div></div>
+
+<div id="quiz-box">
+    <h2 id="question">Chargement...</h2>
+    <input type="text" id="answer" placeholder="Votre réponse...">
+    <br>
+    <button onclick="submitAnswer()">Valider</button>
+    <div id="result"></div>
+</div>
+
+<button id="admin-btn" onclick="toggleAdmin()">⚙</button>
+
+<div id="admin-panel">
+    <h3>Ajouter une question</h3>
+    <input type="text" id="new-q" placeholder="Phrase à conjuguer (ex: Je ___ (être))">
+    <input type="text" id="new-a" placeholder="Réponse (ex: suis)">
+    <button onclick="addQuestion()">Ajouter</button>
+    <br>
+    <button id="close-btn" onclick="toggleAdmin()">Fermer</button>
+</div>
+
+<script>
+let questions = [
+    { q: "Je ___ (être)", a: "suis" },
+    { q: "Tu ___ (avoir)", a: "as" },
+    { q: "Il ___ (aller)", a: "va" },
+    { q: "Nous ___ (faire)", a: "faisons" },
+    { q: "Vous ___ (dire)", a: "dites" },
+    { q: "Ils ___ (prendre)", a: "prennent" }
+];
+
+let index = 0;
+let score = 0;
+
+function loadQuestion() {
+    document.getElementById("question").innerText = questions[index].q;
+}
+
+function submitAnswer() {
+    let userAnswer = document.getElementById("answer").value.trim().toLowerCase();
+    let correct = questions[index].a.toLowerCase();
+
+    if (userAnswer === correct) {
+        score++;
+        document.getElementById("result").innerText = "✔ Correct !";
+        document.getElementById("result").style.color = "#00FF88";
+    } else {
+        document.getElementById("result").innerText = "✘ Incorrect. Réponse : " + correct;
+        document.getElementById("result").style.color = "#FF5555";
+    }
+
+    index++;
+    updateProgress();
+
+    if (index < questions.length) {
+        setTimeout(() => {
+            document.getElementById("answer").value = "";
+            document.getElementById("result").innerText = "";
+            loadQuestion();
+        }, 1000);
+    } else {
+        document.getElementById("question").innerText = "Quiz terminé !";
+        document.getElementById("answer").style.display = "none";
+    }
+}
+
+function updateProgress() {
+    let percent = Math.round((index / questions.length) * 100);
+    document.getElementById("progress-bar").style.width = percent + "%";
+    document.getElementById("progress-bar").innerText = percent + "%";
+}
+
+function toggleAdmin() {
+    let panel = document.getElementById("admin-panel");
+    panel.style.display = (panel.style.display === "block") ? "none" : "block";
+}
+
+function addQuestion() {
+    let newQ = document.getElementById("new-q").value.trim();
+    let newA = document.getElementById("new-a").value.trim();
+
+    if (newQ && newA) {
+        questions.push({ q: newQ, a: newA });
+        document.getElementById("new-q").value = "";
+        document.getElementById("new-a").value = "";
+        alert("Question ajoutée !");
+    }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
